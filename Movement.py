@@ -1,13 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import arcade
-
-SCREEN_WIDTH = NONE
-SCREEN_HEIGHT = NONE
-
-BULLET_SPEED = 5
-
-class shape(arcade.Sprite):
+class target_sprites(arcade.Sprite):
     
     def _init_ (self):
         
@@ -18,34 +11,20 @@ class shape(arcade.Sprite):
         elif self.right > SCREEN_WIDTH - 1:
             self.right = SCREEN_WIDTH - 1
             
-class bullet(arcade.Sprite):
+class bullet_sprites(arcade.Sprite):
     
     def _init_ (self):
         
-        self.bullet_list = None
-        
-    def update(self, delta_time):
-        
-        self.bullet_list.update
-        
-            hit_list = arcade.check_for_collision_with_list(bullet, self.shape_list)
-            
-            if len(hit_list) > 0:
-                bullet.kill()
-                
-            if bullet.bottom > SCREEN_HEIGHT:
-                bullet:kill()
+        self.bullet_sprites = None
                 
     def on_space_bar_press (self, x, y, button, modifiers):
         
-        bullet.angle = 90
+        bullet_sprites.angle = 90
         
-        bullet.change_y = BULLET_SPEED
+        bullet_sprites.change_y = BULLET_SPEED
         
-        bullet.center_x = self.player_sprite.center_x
-        bullet.bottom = self.player_sprite.top
-        
-            
+        bullet_sprites.center_x = self.player_sprite.center_x
+        bullet_sprites.bottom = self.player_sprite.top
             
 class player(arcade.Sprite):
     
