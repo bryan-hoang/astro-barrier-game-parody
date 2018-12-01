@@ -85,7 +85,7 @@ class AstroBarrier(arcade.Window):
 
             # Create the targets instance
             # targets image from kenney.nl
-            target = Target(SPRITE_SCALING_TARGET, 10+i*100, 250+i*75)
+            target = Target(SPRITE_SCALING_TARGET, 10+i*100, 280+i*80)
             target.set_texture(0)
             # Create alternating velocities
             if (i + 1) % 2 == 0:
