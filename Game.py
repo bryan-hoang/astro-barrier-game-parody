@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Dec  1 12:15:14 2018
-
 @author: Liam
 """
 
 import arcade
+from enum import Enum
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -15,6 +15,10 @@ SPRITE_SCALING_TARGET = 0.8
 SPRITE_SCALING_BULLET = 0.8
 TARGET_COUNT = 1
 
+class gameState(Enum):
+    MAIN_MENU = 0
+    PLAYING = 1
+    GAME_OVER = 2
 
 class AstroBarrier(arcade.Window):
     def __init__(self):
@@ -24,23 +28,20 @@ class AstroBarrier(arcade.Window):
         self.player = None
         self.target_sprites = None
         self.bullet_sprites = None
-
-        self.score = 0
-
-        # Use Bryan's code for setting up window
+        self.shoot = None
+        # use Bryan's code for setting up window
         arcade.set_background_color(arcade.color.LIGHT_GREEN)
 
     def setup(self):
 
-        # Set up the player and levels
-        self.score = 0
         self.level = 1
 
         self.player = arcade.SpriteList()
         self.target_sprites = arcade.SpriteList()
         self.bullet_sprites = arcade.SpriteList()
-
+        self.shoot = False
         # use more of Bryan's code #hypercarry
+
         self.player_sprite = arcade.Sprite(
             "textures/Astro_Barrier_Ship_pin.png", SPRITE_SCALING_SHIP)
         self.player_sprite.center_x = 400
@@ -62,23 +63,18 @@ class AstroBarrier(arcade.Window):
             # Add the targets to the lists
             self.target_sprites.append(target)
 
-        # Load sounds. Sounds from kenney.nl
-        self.gun_sound = arcade.sound.load_sound("sounds/laser1.wav")
-        self.hit_sound = arcade.sound.load_sound("sounds/phaseJump1.wav")
-
         # Set the background color
         arcade.set_background_color(arcade.color.LIGHT_GREEN)
 
         # TODO: Eden's code for initializing player
         # self.player = Player()
 
-    # initialize a shit ton of variables
+   # initialize a shit ton of variables
 
         def on_key_press(self, symbol, modifiers):
             # check for user input
             if symbol == arcade.key.SPACE:
                 self.shoot = True
-                # Gunshot sound
 
             if symbol == arcade.key.RIGHT:
                 self.moveRight = True
@@ -96,6 +92,7 @@ class AstroBarrier(arcade.Window):
         arcade.start_render()
 
         # Draw all the sprites.
+
         self.player.draw()
         self.target_sprites.draw()
         self.bullet_sprites.draw()
