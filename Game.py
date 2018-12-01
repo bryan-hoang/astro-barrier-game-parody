@@ -144,11 +144,16 @@ class AstroBarrier(arcade.Window):
 
             # For every coin we hit, add to the score and remove the coin
             for target in hit_list:
-                target.kill()
+                target.hit()
 
             # If the bullet flies off-screen, remove it.
             if bullet.bottom > SCREEN_HEIGHT:
                 bullet.kill()
+                
+            # Call update on everything
+            self.bullet_sprites.update()
+            self.target_sprites.update()
+            self.player.update()
 
     # initialize a shit ton of variables
     def on_key_press(self, key, modifiers):
