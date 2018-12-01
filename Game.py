@@ -24,18 +24,23 @@ class AstroBarrier(arcade.Window):
         self.player = None
         self.target_sprites = None
         self.bullet_sprites = None
+
+        self.score = 0
+
         # use Bryan's code for setting up window
         arcade.set_background_color(arcade.color.LIGHT_GREEN)
 
     def setup(self):
 
+        # Set up the player and levels
+        self.score = 0
         self.level = 1
 
         self.player = arcade.SpriteList()
         self.target_sprites = arcade.SpriteList()
         self.bullet_sprites = arcade.SpriteList()
-        # use more of Bryan's code #hypercarry
 
+        # use more of Bryan's code #hypercarry
         self.player_sprite = arcade.Sprite(
             "textures/Astro_Barrier_Ship_pin.png", SPRITE_SCALING_SHIP)
         self.player_sprite.center_x = 400
@@ -57,18 +62,23 @@ class AstroBarrier(arcade.Window):
             # Add the targets to the lists
             self.target_sprites.append(target)
 
+        # Load sounds. Sounds from kenney.nl
+        self.gun_sound = arcade.sound.load_sound("sounds/laser1.wav")
+        self.hit_sound = arcade.sound.load_sound("sounds/phaseJump1.wav")
+
         # Set the background color
         arcade.set_background_color(arcade.color.LIGHT_GREEN)
 
         # TODO: Eden's code for initializing player
         # self.player = Player()
 
-   # initialize a shit ton of variables
+    # initialize a shit ton of variables
 
         def on_key_press(self, symbol, modifiers):
             # check for user input
             if symbol == arcade.key.SPACE:
                 self.shoot = True
+                # Gunshot sound
 
             if symbol == arcade.key.RIGHT:
                 self.moveRight = True
@@ -80,6 +90,11 @@ class AstroBarrier(arcade.Window):
             # updates game state based on vars above
             if self.shoot:
                 self.player.shoot()
+
+                arcade.sound.play_sound(self.gun_sound)
+                # Create a bullet
+                # bullet = arcade.Sprite("images/laserBlue01.png", SPRITE_SCALING_LASER)
+
                 # arcade.play_sound(SOUNDS['shoot']) optional if want sounds
                 self.shoot = False
 
@@ -109,10 +124,15 @@ class AstroBarrier(arcade.Window):
         arcade.start_render()
 
         # Draw all the sprites.
-
         self.player.draw()
         self.target_sprites.draw()
         self.bullet_sprites.draw()
+
+        # Render the text
+        arcade.draw_text(f"Score: {self.score}", 10,
+                         20, arcade.color.WHITE, 14)
+        arcade.draw_text(f"Level: {self.level}", 10,
+                         40, arcade.color.WHITE, 14)
 
     def update(self, delta_time):
         """ Movement and game logic """
