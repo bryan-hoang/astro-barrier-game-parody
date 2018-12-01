@@ -17,6 +17,7 @@ SPRITE_SCALING_BULLET = 0.8
 TARGET_COUNT = 1
 
 MOVEMENT_SPEED = 5
+BULLET_SPEED = 5
 
 
 class gameState(Enum):
@@ -113,7 +114,7 @@ class AstroBarrier(arcade.Window):
         self.bullet_sprites.draw()
 
         # Render the text
-        arcade.draw_text(f"Score: {self.level}", 10,
+        arcade.draw_text(f"Level: {self.level}", 10,
                          20, arcade.color.WHITE, 14)
 
     def update(self, delta_time):
@@ -149,7 +150,7 @@ class AstroBarrier(arcade.Window):
             # If the bullet flies off-screen, remove it.
             if bullet.bottom > SCREEN_HEIGHT:
                 bullet.kill()
-                
+
             # Call update on everything
             self.bullet_sprites.update()
             self.target_sprites.update()
