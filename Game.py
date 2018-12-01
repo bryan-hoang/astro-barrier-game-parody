@@ -6,6 +6,7 @@ Created on Sat Dec  1 12:15:14 2018
 
 import arcade
 from enum import Enum
+from Target import Target
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -14,7 +15,7 @@ SPRITE_SCALING_SHIP = 0.05
 SPRITE_SCALING_TARGET = 0.8
 SPRITE_SCALING_BULLET = 0.2
 
-TARGET_COUNT = 1
+TARGET_COUNT = 4
 
 MOVEMENT_SPEED = 8
 BULLET_SPEED = 20
@@ -84,12 +85,13 @@ class AstroBarrier(arcade.Window):
 
             # Create the targets instance
             # targets image from kenney.nl
-            target = arcade.Sprite(
-                "textures/Astro_Barrier_Target.png", SPRITE_SCALING_TARGET)
-
-            # Position the targets
-            target.center_x = 400
-            target.center_y = 300
+            target = Target(SPRITE_SCALING_TARGET, 10+i*100, 250+i*75)
+            target.set_texture(0)
+            # Create alternating velocities
+            if (i + 1) % 2 == 0:
+                target.change_x = -5
+            else:
+                target.change_x = 5 
 
             # Add the targets to the lists
             self.target_sprites.append(target)
@@ -114,6 +116,7 @@ class AstroBarrier(arcade.Window):
         self.player_list.draw()
         self.target_sprites.draw()
         self.bullet_sprites.draw()
+        self.red_targets.draw()
 
         # Render the text
         arcade.draw_text(f"Level: {self.level}", 10,
@@ -148,7 +151,7 @@ class AstroBarrier(arcade.Window):
             # For every target we hit, remove and add to red list
             for target in hit_list:
                 self.target_sprites.remove(target)
-                target.load_texture("Red_Target.png",target.center_x,target.center_y,target.width,target.height)
+                target.set_texture(1)
                 self.red_targets.append(target)
 
             # If the bullet flies off-screen, remove it.
