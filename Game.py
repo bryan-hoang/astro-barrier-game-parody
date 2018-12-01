@@ -202,6 +202,16 @@ class AstroBarrier(arcade.Window):
         elif key == arcade.key.RIGHT:
             self.right_pressed = False
 
+        # STEP 3: Game Over Screen after shooting all bullets
+    def draw_game_over(self):
+        """
+        Draw "Game Over" across the screen.
+        """
+        output = "Game Over"
+        arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
+
+        output = "Click to Restart"
+        arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
 
 def main():
     """ Main method """
