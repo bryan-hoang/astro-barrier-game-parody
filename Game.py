@@ -52,6 +52,7 @@ class AstroBarrier(arcade.Window):
 
         self.target_sprites = None
         self.bullet_sprites = None
+        self.hit_target_sprites = None
         self.shoot = None
 
         # Track the current state of what key is pressed
@@ -66,6 +67,7 @@ class AstroBarrier(arcade.Window):
         self.player_list = arcade.SpriteList()
         self.target_sprites = arcade.SpriteList()
         self.bullet_sprites = arcade.SpriteList()
+        self.hit_target_sprites = arcade.SpriteList()
         self.shoot = False
         # use more of Bryan's code #hypercarry
 
@@ -143,9 +145,10 @@ class AstroBarrier(arcade.Window):
             if len(hit_list) > 0:
                 bullet.kill()
 
-            # For every coin we hit, add to the score and remove the coin
+            # For every target we hit, remove and add to hit list
             for target in hit_list:
-                target.hit()
+                self.hit_target_sprites.append(target)
+                self.target_sprites.remove(target)
 
             # If the bullet flies off-screen, remove it.
             if bullet.bottom > SCREEN_HEIGHT:
