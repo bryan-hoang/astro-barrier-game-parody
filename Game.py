@@ -43,7 +43,7 @@ class AstroBarrier(arcade.Window):
 
         # Call the parent class initializer
         super().__init__(
-            SCREEN_WIDTH, SCREEN_HEIGHT,"Club Penguin - Astro Barrier")
+            SCREEN_WIDTH, SCREEN_HEIGHT, "Club Penguin - Astro Barrier")
 
         self.player_list = None
 
@@ -148,18 +148,21 @@ class AstroBarrier(arcade.Window):
             # For every target we hit, remove and add to red list
             for target in hit_list:
                 self.target_sprites.remove(target)
-                target.load_texture("Red_Target.png",target.center_x,target.center_y,target.width,target.height)
+                target.load_texture(
+                    "Red_Target.png", target.center_x, target.center_y,
+                    target.width, target.height)
                 self.red_targets.append(target)
 
             # If the bullet flies off-screen, remove it.
             if bullet.bottom > SCREEN_HEIGHT:
                 bullet.kill()
-                
-            if len(arcade.check_for_collision_with_list(bullet,self.red_targets)) > 0:
+
+            if len(arcade.check_for_collision_with_list(
+                    bullet, self.red_targets)) > 0:
                 bullet.kill()
 
             # Call update on everything
-            self.target_sprites.update()
+        self.target_sprites.update()
 
     # initialize a shit ton of variables
     def on_key_press(self, key, modifiers):
@@ -178,7 +181,7 @@ class AstroBarrier(arcade.Window):
 
             # Add the bullet to the appropriate lists
             self.bullet_sprites.append(bullet)
-            
+
         if key == arcade.key.LEFT:
             self.left_pressed = True
         elif key == arcade.key.RIGHT:
