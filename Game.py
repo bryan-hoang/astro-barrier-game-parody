@@ -12,12 +12,12 @@ SCREEN_HEIGHT = 600
 
 SPRITE_SCALING_SHIP = 0.05
 SPRITE_SCALING_TARGET = 0.8
-SPRITE_SCALING_BULLET = 0.8
+SPRITE_SCALING_BULLET = 0.2
 
 TARGET_COUNT = 1
 
-MOVEMENT_SPEED = 5
-BULLET_SPEED = 5
+MOVEMENT_SPEED = 8
+BULLET_SPEED = 20
 
 
 class gameState(Enum):
@@ -43,7 +43,7 @@ class AstroBarrier(arcade.Window):
 
         # Call the parent class initializer
         super().__init__(
-            SCREEN_WIDTH, SCREEN_HEIGHT, title="Club Penguin - Astro Barrier")
+            SCREEN_WIDTH, SCREEN_HEIGHT,"Club Penguin - Astro Barrier")
 
         self.player_list = None
 
@@ -155,14 +155,26 @@ class AstroBarrier(arcade.Window):
                 bullet.kill()
 
             # Call update on everything
-            self.bullet_sprites.update()
             self.target_sprites.update()
-            self.player.update()
 
     # initialize a shit ton of variables
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
+        if key == arcade.key.SPACE:
+            # Create a bullet
+            bullet = arcade.Sprite(
+                "textures/Bullet.png", SPRITE_SCALING_BULLET)
 
+            # Give the bullet a speed
+            bullet.change_y = BULLET_SPEED
+
+            # Position the bullet
+            bullet.center_x = self.player_sprite.center_x
+            bullet.bottom = self.player_sprite.top
+
+            # Add the bullet to the appropriate lists
+            self.bullet_sprites.append(bullet)
+            
         if key == arcade.key.LEFT:
             self.left_pressed = True
         elif key == arcade.key.RIGHT:
