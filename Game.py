@@ -52,7 +52,7 @@ class AstroBarrier(arcade.Window):
 
         self.target_sprites = None
         self.bullet_sprites = None
-        self.hit_target_sprites = None
+        self.red_targets = None
         self.shoot = None
 
         # Track the current state of what key is pressed
@@ -67,7 +67,7 @@ class AstroBarrier(arcade.Window):
         self.player_list = arcade.SpriteList()
         self.target_sprites = arcade.SpriteList()
         self.bullet_sprites = arcade.SpriteList()
-        self.hit_target_sprites = arcade.SpriteList()
+        self.red_targets = arcade.SpriteList()
         self.shoot = False
         # use more of Bryan's code #hypercarry
 
@@ -145,19 +145,23 @@ class AstroBarrier(arcade.Window):
             if len(hit_list) > 0:
                 bullet.kill()
 
-            # For every target we hit, remove and add to hit list
+            # For every target we hit, remove and add to red list
             for target in hit_list:
-                self.hit_target_sprites.append(target)
                 self.target_sprites.remove(target)
+                target.load_texture("Red_Target.png",target.center_x,target.center_y,target.width,target.height)
+                self.red_targets.append(target)
 
             # If the bullet flies off-screen, remove it.
             if bullet.bottom > SCREEN_HEIGHT:
                 bullet.kill()
+                
+            if len(arcade.check_for_collision_with_list(bullet,self.red_targets)) > 0:
+                bullet.kill()
 
-            # Call update on everything
-            self.bullet_sprites.update()
-            self.target_sprites.update()
-            self.player.update()
+        # Call update on everything
+        self.bullet_sprites.update()
+        self.target_sprites.update()
+        self.player.update()
 
     # initialize a shit ton of variables
     def on_key_press(self, key, modifiers):
