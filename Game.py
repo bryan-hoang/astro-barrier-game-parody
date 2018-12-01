@@ -106,9 +106,6 @@ class AstroBarrier(arcade.Window):
     def on_update(self, delta_time):
         """ Movement and game logic """
 
-        # Call update on bullet sprites
-        self.bullet_sprites.update()
-
         for bullet in self.bullet_sprites:
             hit_list = arcade.check_for_collision_with_list(
                 bullet, self.target_sprites)
@@ -119,11 +116,16 @@ class AstroBarrier(arcade.Window):
 
             # For every coin we hit, add to the score and remove the coin
             for target in hit_list:
-                target.kill()
+                target.hit()
 
             # If the bullet flies off-screen, remove it.
             if bullet.bottom > SCREEN_HEIGHT:
                 bullet.kill()
+                
+            # Call update on everything
+            self.bullet_sprites.update()
+            self.target_sprites.update()
+            self.player.update()
 
 
 def main():
