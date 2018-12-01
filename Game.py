@@ -159,7 +159,7 @@ class AstroBarrier(arcade.Window):
                 bullet.kill()
 
             # Call update on everything
-            self.target_sprites.update()
+        self.target_sprites.update()
 
     # initialize a shit ton of variables
     def on_key_press(self, key, modifiers):
