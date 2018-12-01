@@ -53,12 +53,13 @@ class AstroBarrier(arcade.Window):
         self.player_sprite.center_y = 40
         self.player_list.append(self.player_sprite)
 
-        # Create the targetss
+        # Create the targets
         for i in range(TARGET_COUNT):
 
             # Create the targets instance
             # targets image from kenney.nl
-            target = arcade.Sprite("textures/Astro_Barrier_Target.png",SPRITE_SCALING_TARGET)
+            target = arcade.Sprite(
+                "textures/Astro_Barrier_Target.png", SPRITE_SCALING_TARGET)
 
             # Position the targets
             target.center_x = 400
@@ -94,7 +95,8 @@ class AstroBarrier(arcade.Window):
         for bullet in self.bullet_list:
 
             # Check this bullet to see if it hit a coin
-            hit_list = arcade.check_for_collision_with_list(bullet, self.target_list)
+            hit_list = arcade.check_for_collision_with_list(
+                bullet, self.target_list)
 
             # If it did, get rid of the bullet
             if len(hit_list) > 0:
