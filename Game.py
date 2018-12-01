@@ -125,8 +125,11 @@ class AstroBarrier(arcade.Window):
         self.red_targets.draw()
 
         # Render the text
-        arcade.draw_text(f"Level: {self.level}", 10,
+        arcade.draw_text(f"Bullet Count: ", 650,
                          20, arcade.color.WHITE, 14)
+        arcade.draw_text("Press Left and Right to move"
+                         "\nPress Space to shoot",
+                         10, 40, arcade.color.WHITE, 14)
 
     def update(self, delta_time):
         """ Movement and game logic """
@@ -175,6 +178,7 @@ class AstroBarrier(arcade.Window):
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
         if key == arcade.key.SPACE:
+
             # Create a bullet
             bullet = arcade.Sprite(
                 "textures/Bullet.png", SPRITE_SCALING_BULLET)
