@@ -110,7 +110,16 @@ class AstroBarrier(arcade.Window):
         arcade.start_render()
 
         # Draw all the sprites.
-
+        point_list = ((0, 280),
+                      (800, 280),
+                      (0, 360),
+                      (800, 360),
+                      (0, 440),
+                      (800, 440),
+                      (0, 520),
+                      (800, 520)
+                      )
+        arcade.draw_lines(point_list, arcade.color.BLUE, 10)
         self.player_list.draw()
         self.target_sprites.draw()
         self.bullet_sprites.draw()
