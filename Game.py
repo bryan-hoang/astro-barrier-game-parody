@@ -44,7 +44,7 @@ class AstroBarrier(arcade.Window):
 
         # Call the parent class initializer
         super().__init__(
-            SCREEN_WIDTH, SCREEN_HEIGHT,"Club Penguin - Astro Barrier")
+            SCREEN_WIDTH, SCREEN_HEIGHT, "Club Penguin - Astro Barrier")
 
         self.player_list = None
 
@@ -112,7 +112,16 @@ class AstroBarrier(arcade.Window):
         arcade.start_render()
 
         # Draw all the sprites.
-
+        point_list = ((0, 280),
+                      (800, 280),
+                      (0, 360),
+                      (800, 360),
+                      (0, 440),
+                      (800, 440),
+                      (0, 520),
+                      (800, 520)
+                      )
+        arcade.draw_lines(point_list, arcade.color.BLUE, 10)
         self.player_list.draw()
         self.target_sprites.draw()
         self.bullet_sprites.draw()
@@ -157,8 +166,9 @@ class AstroBarrier(arcade.Window):
             # If the bullet flies off-screen, remove it.
             if bullet.bottom > SCREEN_HEIGHT:
                 bullet.kill()
-                
-            if len(arcade.check_for_collision_with_list(bullet,self.red_targets)) > 0:
+
+            if len(arcade.check_for_collision_with_list(
+                    bullet, self.red_targets)) > 0:
                 bullet.kill()
 
             # Call update on everything
@@ -181,7 +191,7 @@ class AstroBarrier(arcade.Window):
 
             # Add the bullet to the appropriate lists
             self.bullet_sprites.append(bullet)
-            
+
         if key == arcade.key.LEFT:
             self.left_pressed = True
         elif key == arcade.key.RIGHT:
