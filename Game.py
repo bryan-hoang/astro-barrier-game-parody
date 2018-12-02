@@ -136,8 +136,8 @@ class AstroBarrier(arcade.Window):
         # Render the text
         arcade.draw_text(f"Bullet Count: {self.holster}", 650,
                          575, arcade.color.WHITE, 14)
-        arcade.draw_text("Press Left and Right to move"
-                         "\nPress Space to shoot",
+        arcade.draw_text("Press Left and Right to move\n"
+                         "Press Space to shoot",
                          10, 575, arcade.color.WHITE, 14)
 
     def draw_game_over(self):
