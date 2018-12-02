@@ -62,7 +62,7 @@ class AstroBarrier(arcade.Window):
         self.right_pressed = False
 
         # use Bryan's code for setting up window
-        arcade.set_background_color(arcade.color.LIGHT_GREEN)
+        arcade.set_background_color(arcade.color.DARK_GREEN)
 
     def setup(self):
         
@@ -94,13 +94,13 @@ class AstroBarrier(arcade.Window):
             if (i + 1) % 2 == 0:
                 target.change_x = -5
             else:
-                target.change_x = 5 
+                target.change_x = 5
 
             # Add the targets to the lists
             self.target_sprites.append(target)
 
         # Set the background color
-        arcade.set_background_color(arcade.color.LIGHT_GREEN)
+        arcade.set_background_color(arcade.color.DARK_GREEN)
 
         # TODO: Eden's code for initializing player
         # self.player = Player()
@@ -114,25 +114,25 @@ class AstroBarrier(arcade.Window):
         # This command has to happen before we start drawing
         arcade.start_render()
 
-        # Draw all the sprites.
-        point_list = ((0, 280),
-                      (800, 280),
-                      (0, 360),
-                      (800, 360),
-                      (0, 440),
-                      (800, 440),
-                      (0, 520),
-                      (800, 520)
+        point_list = ((0, 280), (800, 280),
+                      (0, 360), (800, 360),
+                      (0, 440), (800, 440),
+                      (0, 520), (800, 520)
                       )
         arcade.draw_lines(point_list, arcade.color.BLUE, 10)
+
+        # Draw all the sprites.
         self.player_list.draw()
         self.target_sprites.draw()
         self.bullet_sprites.draw()
         self.red_targets.draw()
 
         # Render the text
-        arcade.draw_text(f"Level: {self.level}", 10,
+        arcade.draw_text(f"Bullet Count: ", 650,
                          20, arcade.color.WHITE, 14)
+        arcade.draw_text("Press Left and Right to move"
+                         "\nPress Space to shoot",
+                         10, 40, arcade.color.WHITE, 14)
 
     def update(self, delta_time):
         """ Movement and game logic """
@@ -230,6 +230,16 @@ class AstroBarrier(arcade.Window):
         elif key == arcade.key.RIGHT:
             self.right_pressed = False
 
+        # STEP 3: Game Over Screen after shooting all bullets
+    def draw_game_over(self):
+        """
+        Draw "Game Over" across the screen.
+        """
+        output = "Game Over"
+        arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
+
+        output = "Click to Restart"
+        arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
 
 def main():
     """ Main method """
