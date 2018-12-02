@@ -60,6 +60,8 @@ class AstroBarrier(arcade.Window):
         self.left_pressed = False
         self.right_pressed = False
 
+        self.state = gameState.MAIN_MENU
+
         # use Bryan's code for setting up window
         arcade.set_background_color(arcade.color.DARK_GREEN)
 
@@ -72,7 +74,7 @@ class AstroBarrier(arcade.Window):
         self.shoot = False
         # use more of Bryan's code #hypercarry
 
-        self.level = 1
+        self.state = gameState.MAIN_MENU
 
         self.player_sprite = Player(
             "textures/Astro_Barrier_Ship_pin.png", SPRITE_SCALING_SHIP)
@@ -197,26 +199,40 @@ class AstroBarrier(arcade.Window):
     # initialize a shit ton of variables
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
-        if key == arcade.key.SPACE:
+        if self.state == gameState.MAIN_MENU:
+            self.setup()
+            self.state = gameState.PLAYING
+        elif self.state == gameState.PLAYING:
+            if key == arcade.key.SPACE:
+                # Create a bullet
+                if self.holster == 0:
+                    self.state = gameState.GAME_OVER
+                else:
+                    self.holster -= 1
+                    bullet = arcade.Sprite(
+                        "textures/Bullet.png", SPRITE_SCALING_BULLET)
 
-            # Create a bullet
-            bullet = arcade.Sprite(
-                "textures/Bullet.png", SPRITE_SCALING_BULLET)
+                    # Give the bullet a speed
+                    bullet.change_y = BULLET_SPEED
 
-            # Give the bullet a speed
-            bullet.change_y = BULLET_SPEED
+                    # Position the bullet
+                    bullet.center_x = self.player_sprite.center_x
+                    bullet.bottom = self.player_sprite.top
 
-            # Position the bullet
-            bullet.center_x = self.player_sprite.center_x
-            bullet.bottom = self.player_sprite.top
+                    # Add the bullet to the appropriate lists
+                    self.bullet_sprites.append(bullet)
 
-            # Add the bullet to the appropriate lists
-            self.bullet_sprites.append(bullet)
+            if key == arcade.key.LEFT:
+                self.left_pressed = True
+            elif key == arcade.key.RIGHT:
+                self.right_pressed = True
+        elif self.state == gameState.GAME_OVER:
+            self.state = gameState.MAIN_MENU
+            output = "Main Menu"
+            arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
 
-        if key == arcade.key.LEFT:
-            self.left_pressed = True
-        elif key == arcade.key.RIGHT:
-            self.right_pressed = True
+            output = "Press any key to Start"
+            arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
