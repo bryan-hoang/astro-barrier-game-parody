@@ -62,6 +62,7 @@ class AstroBarrier(arcade.Window):
         self.right_pressed = False
 
         self.state = gameState.MAIN_MENU
+        self.total_time = 11.0
 
         # use Bryan's code for setting up window
         arcade.set_background_color(arcade.color.DARK_GREEN)
@@ -77,6 +78,7 @@ class AstroBarrier(arcade.Window):
         # use more of Bryan's code #hypercarry
 
         self.state = gameState.MAIN_MENU
+        self.total_time = 11.0
 
         self.player_sprite = Player(
             "textures/Astro_Barrier_Ship_pin.png", SPRITE_SCALING_SHIP)
@@ -102,9 +104,6 @@ class AstroBarrier(arcade.Window):
 
         # Set the background color
         arcade.set_background_color(arcade.color.DARK_GREEN)
-
-        # TODO: Eden's code for initializing player
-        # self.player = Player()
 
     def draw_main_menu(self):
         """
@@ -139,6 +138,15 @@ class AstroBarrier(arcade.Window):
         arcade.draw_text("Press Left and Right to move\n"
                          "Press Space to shoot",
                          10, 575, arcade.color.WHITE, 14)
+
+        # Calculate seconds by using a modulus (remainder)
+        seconds = int(self.total_time) % 60
+
+        # Figure out our output
+        output = f"Time: {seconds:02d} s"
+
+        # Output the timer text.
+        arcade.draw_text(output, 350, 575, arcade.color.WHITE, 14)
 
     def draw_game_over(self):
         """
@@ -212,7 +220,15 @@ class AstroBarrier(arcade.Window):
             # Call update on everything
         self.target_sprites.update()
 
+        if self.total_time > 1 and self.holster > 0:
+            self.total_time -= delta_time
+        elif self.total_time <= 1 or self.holster <= 0:
+            self.state = gameState.GAME_OVER
+            self.total_time = 0
+            self.holster = 0
+
     # initialize a shit ton of variables
+
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
         if self.state == gameState.MAIN_MENU:
@@ -221,22 +237,19 @@ class AstroBarrier(arcade.Window):
         elif self.state == gameState.PLAYING:
             if key == arcade.key.SPACE:
                 # Create a bullet
-                if self.holster == 0:
-                    self.state = gameState.GAME_OVER
-                else:
-                    self.holster -= 1
-                    bullet = arcade.Sprite(
-                        "textures/Bullet.png", SPRITE_SCALING_BULLET)
+                self.holster -= 1
+                bullet = arcade.Sprite(
+                    "textures/Bullet.png", SPRITE_SCALING_BULLET)
 
-                    # Give the bullet a speed
-                    bullet.change_y = BULLET_SPEED
+                # Give the bullet a speed
+                bullet.change_y = BULLET_SPEED
 
-                    # Position the bullet
-                    bullet.center_x = self.player_sprite.center_x
-                    bullet.bottom = self.player_sprite.top
+                # Position the bullet
+                bullet.center_x = self.player_sprite.center_x
+                bullet.bottom = self.player_sprite.top
 
-                    # Add the bullet to the appropriate lists
-                    self.bullet_sprites.append(bullet)
+                # Add the bullet to the appropriate lists
+                self.bullet_sprites.append(bullet)
             if key == arcade.key.LEFT:
                 self.left_pressed = True
             elif key == arcade.key.RIGHT:
@@ -244,11 +257,7 @@ class AstroBarrier(arcade.Window):
 
         elif self.state == gameState.GAME_OVER:
             self.state = gameState.MAIN_MENU
-            output = "Main Menu"
-            arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
-
-            output = "Press any key to Start"
-            arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
+            self.setup()
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
