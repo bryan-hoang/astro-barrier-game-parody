@@ -24,7 +24,8 @@ BULLET_SPEED = 20
 class gameState(Enum):
     MAIN_MENU = 0
     PLAYING = 1
-    GAME_OVER = 2
+    SUCCESS = 2
+    GAME_OVER = 3
 
 
 class Player(arcade.Sprite):
@@ -148,6 +149,16 @@ class AstroBarrier(arcade.Window):
         # Output the timer text.
         arcade.draw_text(output, 350, 575, arcade.color.WHITE, 14)
 
+    def draw_success(self):
+        """
+        Draw "Success" across the screen.
+        """
+        output = "Success"
+        arcade.draw_text(output, 280, 400, arcade.color.WHITE, 54)
+
+        output = "Press space to play again"
+        arcade.draw_text(output, 225, 300, arcade.color.WHITE, 24)
+
     def draw_game_over(self):
         """
         Draw "Game Over" across the screen.
@@ -173,6 +184,9 @@ class AstroBarrier(arcade.Window):
         elif self.state == gameState.PLAYING:
             self.draw_game()
 
+        elif self.state == gameState.SUCCESS:
+            self.draw_game()
+            self.draw_success()
         else:
             self.draw_game()
             self.draw_game_over()
@@ -220,7 +234,10 @@ class AstroBarrier(arcade.Window):
             # Call update on everything
         self.target_sprites.update()
 
-        if self.total_time > 1 and self.holster > 0:
+        if len(self.red_targets) == 4:
+            self.state = gameState.SUCCESS
+
+        elif self.total_time > 1 and self.holster > 0:
             self.total_time -= delta_time
         elif self.total_time <= 1 or self.holster <= 0:
             self.state = gameState.GAME_OVER
@@ -254,7 +271,9 @@ class AstroBarrier(arcade.Window):
                 self.left_pressed = True
             elif key == arcade.key.RIGHT:
                 self.right_pressed = True
-
+        elif self.state == gameState.SUCCESS:
+            self.state = gameState.MAIN_MENU
+            self.setup()
         elif self.state == gameState.GAME_OVER:
             self.state = gameState.MAIN_MENU
             self.setup()
@@ -266,16 +285,6 @@ class AstroBarrier(arcade.Window):
             self.left_pressed = False
         elif key == arcade.key.RIGHT:
             self.right_pressed = False
-
-    def draw_success(self):
-        """
-        Draw "Success" across the screen.
-        """
-        output = "Sucess"
-        arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
-
-        output = "Press space to play again"
-        arcade.draw_text(output, 265, 300, arcade.color.WHITE, 24)    
 
 
 def main():
