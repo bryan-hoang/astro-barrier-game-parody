@@ -47,6 +47,7 @@ class AstroBarrier(arcade.Window):
             SCREEN_WIDTH, SCREEN_HEIGHT, "Club Penguin - Astro Barrier")
 
         self.player_list = None
+        self.holster = None
 
         self.player_sprite = None
         self.level = 1
@@ -72,6 +73,7 @@ class AstroBarrier(arcade.Window):
         self.bullet_sprites = arcade.SpriteList()
         self.red_targets = arcade.SpriteList()
         self.shoot = False
+        self.holster = 10
         # use more of Bryan's code #hypercarry
 
         self.state = gameState.MAIN_MENU
