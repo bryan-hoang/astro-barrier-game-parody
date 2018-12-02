@@ -45,7 +45,7 @@ class AstroBarrier(arcade.Window):
         # Call the parent class initializer
         super().__init__(
             SCREEN_WIDTH, SCREEN_HEIGHT, "Club Penguin - Astro Barrier")
-        self.state = None
+
         self.player_list = None
 
         self.player_sprite = None
@@ -55,7 +55,6 @@ class AstroBarrier(arcade.Window):
         self.bullet_sprites = None
         self.red_targets = None
         self.shoot = None
-        self.holster = None
 
         # Track the current state of what key is pressed
         self.left_pressed = False
@@ -65,14 +64,12 @@ class AstroBarrier(arcade.Window):
         arcade.set_background_color(arcade.color.DARK_GREEN)
 
     def setup(self):
-        
-        self.state = gameState.MAIN_MENU
+
         self.player_list = arcade.SpriteList()
         self.target_sprites = arcade.SpriteList()
         self.bullet_sprites = arcade.SpriteList()
         self.red_targets = arcade.SpriteList()
         self.shoot = False
-        self.holster = 10
         # use more of Bryan's code #hypercarry
 
         self.level = 1
@@ -105,6 +102,26 @@ class AstroBarrier(arcade.Window):
         # TODO: Eden's code for initializing player
         # self.player = Player()
 
+    def draw_instructions_page(self, page_number):
+        """
+        Draw an instruction page.
+        """
+        output = "Main Menu"
+        arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
+
+        output = "Click to start"
+        arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
+
+    def draw_game_over(self):
+        """
+        Draw "Game Over" across the screen.
+        """
+        output = "Game Over"
+        arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
+
+        output = "Click to Restart"
+        arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
+
     # Draw the sprites
     def on_draw(self):
         """
@@ -136,91 +153,70 @@ class AstroBarrier(arcade.Window):
 
     def update(self, delta_time):
         """ Movement and game logic """
-        if self.state == gameState.GAME_OVER:
-            output = "Game Over"
-            arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
 
-            output = "Press any key to Restart"
-            arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
-            
-        elif self.state == gameState.PLAYING:
-            # Calculate speed based on the keys pressed
-            self.player_sprite.change_x = 0
-            self.player_sprite.change_y = 0
-    
-            if self.left_pressed and not self.right_pressed:
-                self.player_sprite.change_x = -MOVEMENT_SPEED
-            elif self.right_pressed and not self.left_pressed:
-                self.player_sprite.change_x = MOVEMENT_SPEED
-    
-            # Call update on player
-            self.player_list.update()
-    
-            # Call update on bullet sprites
-            self.bullet_sprites.update()
-    
-            for bullet in self.bullet_sprites:
-                hit_list = arcade.check_for_collision_with_list(
-                    bullet, self.target_sprites)
-    
-                # If it did, get rid of the bullet
-                if len(hit_list) > 0:
-                    bullet.kill()
-    
-                # For every target we hit, remove and add to red list
-                for target in hit_list:
-                    self.target_sprites.remove(target)
-                    target.set_texture(1)
-                    self.red_targets.append(target)
-    
-                # If the bullet flies off-screen, remove it.
-                if bullet.bottom > SCREEN_HEIGHT:
-                    bullet.kill()
-    
-                if len(arcade.check_for_collision_with_list(
-                        bullet, self.red_targets)) > 0:
-                    bullet.kill()
-    
-                # Call update on everything
-            self.target_sprites.update()
+        # Calculate speed based on the keys pressed
+        self.player_sprite.change_x = 0
+        self.player_sprite.change_y = 0
+
+        if self.left_pressed and not self.right_pressed:
+            self.player_sprite.change_x = -MOVEMENT_SPEED
+        elif self.right_pressed and not self.left_pressed:
+            self.player_sprite.change_x = MOVEMENT_SPEED
+
+        # Call update on player
+        self.player_list.update()
+
+        # Call update on bullet sprites
+        self.bullet_sprites.update()
+
+        for bullet in self.bullet_sprites:
+            hit_list = arcade.check_for_collision_with_list(
+                bullet, self.target_sprites)
+
+            # If it did, get rid of the bullet
+            if len(hit_list) > 0:
+                bullet.kill()
+
+            # For every target we hit, remove and add to red list
+            for target in hit_list:
+                self.target_sprites.remove(target)
+                target.set_texture(1)
+                self.red_targets.append(target)
+
+            # If the bullet flies off-screen, remove it.
+            if bullet.bottom > SCREEN_HEIGHT:
+                bullet.kill()
+
+            if len(arcade.check_for_collision_with_list(
+                    bullet, self.red_targets)) > 0:
+                bullet.kill()
+
+            # Call update on everything
+        self.target_sprites.update()
 
     # initialize a shit ton of variables
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
-        if self.state == gameState.PLAYING:
-            if key == arcade.key.SPACE:
-                # Create a bullet
-                if self.holster == 0:
-                    self.state = gameState.GAME_OVER
-                else:
-                    self.holster -= 1        
-                    bullet = arcade.Sprite(
-                        "textures/Bullet.png", SPRITE_SCALING_BULLET)
-        
-                    # Give the bullet a speed
-                    bullet.change_y = BULLET_SPEED
-        
-                    # Position the bullet
-                    bullet.center_x = self.player_sprite.center_x
-                    bullet.bottom = self.player_sprite.top
-        
-                    # Add the bullet to the appropriate lists
-                    self.bullet_sprites.append(bullet)
-    
-            if key == arcade.key.LEFT:
-                self.left_pressed = True
-            elif key == arcade.key.RIGHT:
-                self.right_pressed = True
-        if self.state == gameState.GAME_OVER:
-            self.state = gameState.MAIN_MENU
-            output = "Main Menu"
-            arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
+        if key == arcade.key.SPACE:
 
-            output = "Press any key to Start"
-            arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
-        if self.state == gameState.MAIN_MENU:
-            self.state = gameState.PLAYING
-            
+            # Create a bullet
+            bullet = arcade.Sprite(
+                "textures/Bullet.png", SPRITE_SCALING_BULLET)
+
+            # Give the bullet a speed
+            bullet.change_y = BULLET_SPEED
+
+            # Position the bullet
+            bullet.center_x = self.player_sprite.center_x
+            bullet.bottom = self.player_sprite.top
+
+            # Add the bullet to the appropriate lists
+            self.bullet_sprites.append(bullet)
+
+        if key == arcade.key.LEFT:
+            self.left_pressed = True
+        elif key == arcade.key.RIGHT:
+            self.right_pressed = True
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
@@ -231,15 +227,7 @@ class AstroBarrier(arcade.Window):
             self.right_pressed = False
 
         # STEP 3: Game Over Screen after shooting all bullets
-    def draw_game_over(self):
-        """
-        Draw "Game Over" across the screen.
-        """
-        output = "Game Over"
-        arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
 
-        output = "Click to Restart"
-        arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
 
 def main():
     """ Main method """
