@@ -106,35 +106,20 @@ class AstroBarrier(arcade.Window):
         # TODO: Eden's code for initializing player
         # self.player = Player()
 
-    def draw_instructions_page(self, page_number):
+    def draw_main_menu(self):
         """
-        Draw an instruction page.
+        Draw a main menu.
         """
         output = "Main Menu"
         arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
 
-        output = "Click to start"
-        arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
+        output = "Press space to start"
+        arcade.draw_text(output, 285, 300, arcade.color.WHITE, 24)
 
-    def draw_game_over(self):
+    def draw_game(self):
         """
-        Draw "Game Over" across the screen.
+        Draw all the sprites.
         """
-        output = "Game Over"
-        arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
-
-        output = "Click to Restart"
-        arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
-
-    # Draw the sprites
-    def on_draw(self):
-        """
-        Render the screen.
-        """
-
-        # This command has to happen before we start drawing
-        arcade.start_render()
-
         point_list = ((0, 280), (800, 280),
                       (0, 360), (800, 360),
                       (0, 440), (800, 440),
@@ -149,11 +134,40 @@ class AstroBarrier(arcade.Window):
         self.red_targets.draw()
 
         # Render the text
-        arcade.draw_text(f"Bullet Count: ", 650,
+        arcade.draw_text(f"Bullet Count: {self.holster}", 650,
                          575, arcade.color.WHITE, 14)
         arcade.draw_text("Press Left and Right to move"
                          "\nPress Space to shoot",
                          10, 575, arcade.color.WHITE, 14)
+
+    def draw_game_over(self):
+        """
+        Draw "Game Over" across the screen.
+        """
+        output = "Game Over"
+        arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
+
+        output = "Press space to restart"
+        arcade.draw_text(output, 265, 300, arcade.color.WHITE, 24)
+
+    # Draw the sprites
+    def on_draw(self):
+        """
+        Render the screen.
+        """
+
+        # This command has to happen before we start drawing
+        arcade.start_render()
+
+        if self.state == gameState.MAIN_MENU:
+            self.draw_main_menu()
+
+        elif self.state == gameState.PLAYING:
+            self.draw_game()
+
+        else:
+            self.draw_game()
+            self.draw_game_over()
 
     def update(self, delta_time):
         """ Movement and game logic """
@@ -223,11 +237,11 @@ class AstroBarrier(arcade.Window):
 
                     # Add the bullet to the appropriate lists
                     self.bullet_sprites.append(bullet)
-
             if key == arcade.key.LEFT:
                 self.left_pressed = True
             elif key == arcade.key.RIGHT:
                 self.right_pressed = True
+
         elif self.state == gameState.GAME_OVER:
             self.state = gameState.MAIN_MENU
             output = "Main Menu"
