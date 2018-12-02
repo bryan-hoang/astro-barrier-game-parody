@@ -267,7 +267,15 @@ class AstroBarrier(arcade.Window):
         elif key == arcade.key.RIGHT:
             self.right_pressed = False
 
-        # STEP 3: Game Over Screen after shooting all bullets
+    def draw_success(self):
+        """
+        Draw "Success" across the screen.
+        """
+        output = "Sucess"
+        arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
+
+        output = "Press space to play again"
+        arcade.draw_text(output, 265, 300, arcade.color.WHITE, 24)    
 
 
 def main():
