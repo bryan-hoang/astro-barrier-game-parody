@@ -211,7 +211,7 @@ class AstroBarrier(arcade.Window):
                 self.left_pressed = True
             elif key == arcade.key.RIGHT:
                 self.right_pressed = True
-        if self.state == gameState.GAME_OVER:
+        elif self.state == gameState.GAME_OVER:
             self.state = gameState.MAIN_MENU
             output = "Main Menu"
             arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
@@ -219,6 +219,7 @@ class AstroBarrier(arcade.Window):
             output = "Press any key to Start"
             arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
         if self.state == gameState.MAIN_MENU:
+            self.setup()
             self.state = gameState.PLAYING
             
 
