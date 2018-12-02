@@ -248,7 +248,7 @@ class AstroBarrier(arcade.Window):
             arcade.draw_text(output, 240, 400, arcade.color.WHITE, 54)
 
             output = "Press any key to Start"
-            arcade.draw_text(output, 310, 300, arcade.color.WHITE, 24)
+            arcade.draw_text(output, 150, 300, arcade.color.WHITE, 24)
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
