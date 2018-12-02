@@ -1,2 +1,3 @@
-# MLH-Local-Hack-Day-2018
+# Astro Barrier
+
 A project created during a hackathon
