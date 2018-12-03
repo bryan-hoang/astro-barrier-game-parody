@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Dec  1 12:15:14 2018
-@author: Liam
+@author: Liam, Bryan, Eden
 """
 
 import arcade
@@ -237,7 +237,8 @@ class AstroBarrier(arcade.Window):
         if len(self.red_targets) == 4:
             self.state = gameState.SUCCESS
 
-        elif self.total_time > 1 and self.holster > 0:
+        elif self.total_time > 1 and self.holster > 0 and \
+                (self.state == gameState.PLAYING):
             self.total_time -= delta_time
         elif self.total_time <= 1 or self.holster <= 0:
             self.state = gameState.GAME_OVER
