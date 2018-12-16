@@ -7,6 +7,7 @@ Created on Sat Dec  1 12:15:14 2018
 import arcade
 from enum import Enum
 from Target import Target
+import numpy as np
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -73,7 +74,7 @@ class AstroBarrier(arcade.Window):
         self.bullet_sprites = arcade.SpriteList()
         self.red_targets = arcade.SpriteList()
         self.shoot = False
-        self.holster = 10
+        self.holster = 10 + self.level
         # use more of Bryan's code #hypercarry
 
         self.state = gameState.MAIN_MENU
@@ -85,11 +86,11 @@ class AstroBarrier(arcade.Window):
         self.player_list.append(self.player_sprite)
 
         # Create the targets
-        for i in range(TARGET_COUNT):
+        for i in range(TARGET_COUNT + self.level -1):
 
             # Create the targets instance
             # targets image from kenney.nl
-            target = Target(SPRITE_SCALING_TARGET, 10+i*100, 280+i*80)
+            target = Target(SPRITE_SCALING_TARGET, 400, 280+i*80)
             target.set_texture(0)
             # Create alternating velocities
             if (i + 1) % 2 == 0:
@@ -134,12 +135,14 @@ class AstroBarrier(arcade.Window):
 
         # This command has to happen before we start drawing
         arcade.start_render()
-
-        point_list = ((0, 280), (800, 280),
-                      (0, 360), (800, 360),
-                      (0, 440), (800, 440),
-                      (0, 520), (800, 520)
-                      )
+        i = 2*(self.level + 3)
+        point_list = np.zeros((i,2))
+        for i in range(0,i,2):
+            point_list[i,0] = 0
+            point_list[i,1] = 280 + 80*(i/2)
+        for i in range(1,i+2,2):
+            point_list[i,0] = 800
+            point_list[i,1] = 280 + 80*((i-1)/2)
         arcade.draw_lines(point_list, arcade.color.BLUE, 10)
 
         # Draw all the sprites.
@@ -198,6 +201,7 @@ class AstroBarrier(arcade.Window):
             # Call update on everything
         self.target_sprites.update()
 
+
     # initialize a shit ton of variables
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
@@ -207,7 +211,9 @@ class AstroBarrier(arcade.Window):
         elif self.state == gameState.PLAYING:
             if key == arcade.key.SPACE:
                 # Create a bullet
-                if self.holster == 0:
+                if len(self.target_sprites) == 0:
+                    print("Level Up")
+                elif self.holster == 0:
                     self.state = gameState.GAME_OVER
                 else:
                     self.holster -= 1
