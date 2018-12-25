@@ -1,6 +1,6 @@
 # Astro Barrier
 
-A project created during a hackathon
+A project created during a hackathon. Note: I have not tested the game since demoing it at the competition, so there still may be some bugs.
 
 Notes made while planning:
 
