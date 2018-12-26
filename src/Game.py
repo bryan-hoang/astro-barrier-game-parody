@@ -33,7 +33,6 @@ class Player(arcade.Sprite):
     def update(self):
         self.center_x += self.change_x
         self.center_y += self.change_y
-
         if self.left < 0:
             self.left = 0
         elif self.right > SCREEN_WIDTH - 1:
@@ -42,29 +41,23 @@ class Player(arcade.Sprite):
 
 class AstroBarrier(arcade.Window):
     def __init__(self):
-
         # Call the parent class initializer
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT,
                          "Club Penguin - Astro Barrier")
-
         self.player_list = None
         self.holster = None
-
         self.player_sprite = None
         self.level = 1
-
         self.target_sprites = None
         self.bullet_sprites = None
         self.red_targets = None
         self.shoot = None
-
         # Track the current state of what key is pressed
         self.left_pressed = False
         self.right_pressed = False
 
         self.state = gameState.MAIN_MENU
         self.total_time = 11.0
-
         # use Bryan's code for setting up window
         arcade.set_background_color(arcade.color.DARK_GREEN)
 
@@ -81,7 +74,7 @@ class AstroBarrier(arcade.Window):
         self.state = gameState.MAIN_MENU
         self.total_time = 11.0
 
-        self.player_sprite = Player("textures/Astro_Barrier_Ship_pin.png",
+        self.player_sprite = Player("../textures/Astro_Barrier_Ship_pin.png",
                                     SPRITE_SCALING_SHIP)
         self.player_sprite.center_x = 400
         self.player_sprite.center_y = 40
@@ -254,7 +247,7 @@ class AstroBarrier(arcade.Window):
             if key == arcade.key.SPACE:
                 # Create a bullet
                 self.holster -= 1
-                bullet = arcade.Sprite("textures/Bullet.png",
+                bullet = arcade.Sprite("../textures/Bullet.png",
                                        SPRITE_SCALING_BULLET)
 
                 # Give the bullet a speed
