@@ -7,6 +7,7 @@ Created on Sat Dec  1 12:15:14 2018
 import arcade
 from enum import Enum
 from Target import Target
+
 # import numpy as np
 
 SCREEN_WIDTH = 800
@@ -42,8 +43,7 @@ class Player(arcade.Sprite):
 class AstroBarrier(arcade.Window):
     def __init__(self):
         # Call the parent class initializer
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT,
-                         "Club Penguin - Astro Barrier")
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Club Penguin - Astro Barrier")
         self.player_list = None
         self.holster = None
         self.player_sprite = None
@@ -74,8 +74,9 @@ class AstroBarrier(arcade.Window):
         self.state = gameState.MAIN_MENU
         self.total_time = 11.0
 
-        self.player_sprite = Player("../textures/Astro_Barrier_Ship_pin.png",
-                                    SPRITE_SCALING_SHIP)
+        self.player_sprite = Player(
+            "../textures/Astro_Barrier_Ship_pin.png", SPRITE_SCALING_SHIP
+        )
         self.player_sprite.center_x = 400
         self.player_sprite.center_y = 40
         self.player_list.append(self.player_sprite)
@@ -113,8 +114,16 @@ class AstroBarrier(arcade.Window):
         """
         Draw all the sprites.
         """
-        point_list = ((0, 280), (800, 280), (0, 360), (800, 360), (0, 440),
-                      (800, 440), (0, 520), (800, 520))
+        point_list = (
+            (0, 280),
+            (800, 280),
+            (0, 360),
+            (800, 360),
+            (0, 440),
+            (800, 440),
+            (0, 520),
+            (800, 520),
+        )
         arcade.draw_lines(point_list, arcade.color.BLUE, 10)
 
         # Draw all the sprites.
@@ -124,11 +133,16 @@ class AstroBarrier(arcade.Window):
         self.red_targets.draw()
 
         # Render the text
-        arcade.draw_text(f"Bullet Count: {self.holster}", 650, 575,
-                         arcade.color.WHITE, 14)
         arcade.draw_text(
-            "Press Left and Right to move\n"
-            "Press Space to shoot", 10, 575, arcade.color.WHITE, 14)
+            f"Bullet Count: {self.holster}", 650, 575, arcade.color.WHITE, 14
+        )
+        arcade.draw_text(
+            "Press Left and Right to move\n" "Press Space to shoot",
+            10,
+            575,
+            arcade.color.WHITE,
+            14,
+        )
 
         # Calculate seconds by using a modulus (remainder)
         seconds = int(self.total_time) % 60
@@ -200,8 +214,7 @@ class AstroBarrier(arcade.Window):
         self.bullet_sprites.update()
 
         for bullet in self.bullet_sprites:
-            hit_list = arcade.check_for_collision_with_list(
-                bullet, self.target_sprites)
+            hit_list = arcade.check_for_collision_with_list(bullet, self.target_sprites)
 
             # If it did, get rid of the bullet
             if len(hit_list) > 0:
@@ -217,9 +230,7 @@ class AstroBarrier(arcade.Window):
             if bullet.bottom > SCREEN_HEIGHT:
                 bullet.kill()
 
-            if len(
-                    arcade.check_for_collision_with_list(
-                        bullet, self.red_targets)) > 0:
+            if len(arcade.check_for_collision_with_list(bullet, self.red_targets)) > 0:
                 bullet.kill()
 
             # Call update on everything
@@ -228,8 +239,11 @@ class AstroBarrier(arcade.Window):
         if len(self.red_targets) == 4:
             self.state = gameState.SUCCESS
 
-        elif self.total_time > 1 and self.holster > 0 and \
-                (self.state == gameState.PLAYING):
+        elif (
+            self.total_time > 1
+            and self.holster > 0
+            and (self.state == gameState.PLAYING)
+        ):
             self.total_time -= delta_time
         elif self.total_time <= 1 or self.holster <= 0:
             self.state = gameState.GAME_OVER
@@ -247,8 +261,7 @@ class AstroBarrier(arcade.Window):
             if key == arcade.key.SPACE:
                 # Create a bullet
                 self.holster -= 1
-                bullet = arcade.Sprite("../textures/Bullet.png",
-                                       SPRITE_SCALING_BULLET)
+                bullet = arcade.Sprite("../textures/Bullet.png", SPRITE_SCALING_BULLET)
 
                 # Give the bullet a speed
                 bullet.change_y = BULLET_SPEED

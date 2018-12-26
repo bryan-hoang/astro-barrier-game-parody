@@ -15,9 +15,11 @@ class Target(arcade.AnimatedTimeSprite):
         # take x and y vars from AnimatedTimeSprite)
         super().__init__(scale=scale, center_x=center_x, center_y=center_y)
         self.textures.append(
-            arcade.load_texture("../textures/Astro_Barrier_Target.png"))
+            arcade.load_texture("../textures/Astro_Barrier_Target.png")
+        )
         self.textures.append(
-            arcade.load_texture("../textures/Red_Target.png", scale=.5))
+            arcade.load_texture("../textures/Red_Target.png", scale=0.5)
+        )
         self.change_x = 0
 
     def update(self):
