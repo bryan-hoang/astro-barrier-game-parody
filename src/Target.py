@@ -6,6 +6,7 @@ Created on Sat Dec  1 17:13:47 2018
 """
 
 import arcade
+
 SCREEN_WIDTH = 800
 
 
