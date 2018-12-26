@@ -30,7 +30,6 @@ class gameState(Enum):
 
 
 class Player(arcade.Sprite):
-
     def update(self):
         self.center_x += self.change_x
         self.center_y += self.change_y
@@ -45,8 +44,8 @@ class AstroBarrier(arcade.Window):
     def __init__(self):
 
         # Call the parent class initializer
-        super().__init__(
-            SCREEN_WIDTH, SCREEN_HEIGHT, "Club Penguin - Astro Barrier")
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT,
+                         "Club Penguin - Astro Barrier")
 
         self.player_list = None
         self.holster = None
@@ -82,8 +81,8 @@ class AstroBarrier(arcade.Window):
         self.state = gameState.MAIN_MENU
         self.total_time = 11.0
 
-        self.player_sprite = Player(
-            "textures/Astro_Barrier_Ship_pin.png", SPRITE_SCALING_SHIP)
+        self.player_sprite = Player("textures/Astro_Barrier_Ship_pin.png",
+                                    SPRITE_SCALING_SHIP)
         self.player_sprite.center_x = 400
         self.player_sprite.center_y = 40
         self.player_list.append(self.player_sprite)
@@ -93,7 +92,7 @@ class AstroBarrier(arcade.Window):
 
             # Create the targets instance
             # targets image from kenney.nl
-            target = Target(SPRITE_SCALING_TARGET, 400, 280+i*80)
+            target = Target(SPRITE_SCALING_TARGET, 400, 280 + i * 80)
             target.set_texture(0)
             # Create alternating velocities
             if (i + 1) % 2 == 0:
@@ -121,11 +120,8 @@ class AstroBarrier(arcade.Window):
         """
         Draw all the sprites.
         """
-        point_list = ((0, 280), (800, 280),
-                      (0, 360), (800, 360),
-                      (0, 440), (800, 440),
-                      (0, 520), (800, 520)
-                      )
+        point_list = ((0, 280), (800, 280), (0, 360), (800, 360), (0, 440),
+                      (800, 440), (0, 520), (800, 520))
         arcade.draw_lines(point_list, arcade.color.BLUE, 10)
 
         # Draw all the sprites.
@@ -135,11 +131,11 @@ class AstroBarrier(arcade.Window):
         self.red_targets.draw()
 
         # Render the text
-        arcade.draw_text(f"Bullet Count: {self.holster}", 650,
-                         575, arcade.color.WHITE, 14)
-        arcade.draw_text("Press Left and Right to move\n"
-                         "Press Space to shoot",
-                         10, 575, arcade.color.WHITE, 14)
+        arcade.draw_text(f"Bullet Count: {self.holster}", 650, 575,
+                         arcade.color.WHITE, 14)
+        arcade.draw_text(
+            "Press Left and Right to move\n"
+            "Press Space to shoot", 10, 575, arcade.color.WHITE, 14)
 
         # Calculate seconds by using a modulus (remainder)
         seconds = int(self.total_time) % 60
@@ -228,8 +224,9 @@ class AstroBarrier(arcade.Window):
             if bullet.bottom > SCREEN_HEIGHT:
                 bullet.kill()
 
-            if len(arcade.check_for_collision_with_list(
-                    bullet, self.red_targets)) > 0:
+            if len(
+                    arcade.check_for_collision_with_list(
+                        bullet, self.red_targets)) > 0:
                 bullet.kill()
 
             # Call update on everything
@@ -257,8 +254,8 @@ class AstroBarrier(arcade.Window):
             if key == arcade.key.SPACE:
                 # Create a bullet
                 self.holster -= 1
-                bullet = arcade.Sprite(
-                    "textures/Bullet.png", SPRITE_SCALING_BULLET)
+                bullet = arcade.Sprite("textures/Bullet.png",
+                                       SPRITE_SCALING_BULLET)
 
                 # Give the bullet a speed
                 bullet.change_y = BULLET_SPEED
